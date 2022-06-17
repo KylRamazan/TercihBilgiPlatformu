@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Abstract;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.Repositories;
 using EntityLayer.Concrete;
 using System;
@@ -11,6 +12,13 @@ namespace DataAccessLayer.EntityFramework
 {
   public class EFBolumRepository : IBolumDAL
   {
+    private Context context;
+
+    public EFBolumRepository()
+    {
+      context = new Context();
+    }
+
     public void Ekle(Bolum item)
     {
       throw new NotImplementedException();
@@ -23,7 +31,7 @@ namespace DataAccessLayer.EntityFramework
 
     public List<Bolum> GetList()
     {
-      throw new NotImplementedException();
+      return context.Bolums.Where(x => x.Silindi == false).ToList();
     }
 
     public void Guncelle(Bolum item)

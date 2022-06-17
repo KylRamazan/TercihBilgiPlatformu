@@ -32,6 +32,10 @@ namespace TercihBilgiPlatformu
     {
       services.AddTransient<IKullaniciService, KullaniciManager>();
       services.AddTransient<IKullaniciDAL, EFKullaniciRepository>();
+      services.AddTransient<IBolumService, BolumManager>();
+      services.AddTransient<IBolumDAL, EFBolumRepository>();
+      services.AddTransient<IUniversiteService, UniversiteManager>();
+      services.AddTransient<IUniversiteDAL, EFUniversiteRepository>();
 
 
       //services.AddControllers();

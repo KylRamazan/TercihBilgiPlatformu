@@ -2,13 +2,18 @@
 using BusinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using EntityLayer.Concrete;
+using EntityLayer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,10 +24,14 @@ namespace TercihBilgiPlatformu.Controllers
   {
     Context _ctx = new Context();
     private IKullaniciService _kullaniciService;
+    private IUniversiteService _universiteService;
+    private IBolumService _bolumService;
 
-    public LoginController(IKullaniciService kullaniciService)
+    public LoginController(IKullaniciService kullaniciService, IUniversiteService universiteService, IBolumService bolumService)
     {
       _kullaniciService = kullaniciService;
+      _universiteService = universiteService;
+      _bolumService = bolumService;
     }
 
     [HttpGet]
@@ -34,7 +43,7 @@ namespace TercihBilgiPlatformu.Controllers
     [HttpPost]
     public async Task<IActionResult> SignIn(Kullanici kullanici)
     {
-      var value = _ctx.Kullanicis.FirstOrDefault(x => x.EMail == kullanici.EMail && x.Sifre == kullanici.Sifre);
+      var value = _ctx.Kullanicis.FirstOrDefault(x => x.EMail == kullanici.EMail && x.Sifre == SHA256.SHA256Sifreleme(kullanici.Sifre));
 
       if (value != null)
       {
@@ -57,6 +66,12 @@ namespace TercihBilgiPlatformu.Controllers
     [HttpGet]
     public IActionResult SignUp()
     {
+      List<Universite> universiteler = _universiteService.GetList();
+      List<Bolum> bolumler = _bolumService.GetList();
+
+      ViewBag.universiteler = universiteler;
+      ViewBag.bolumler = bolumler;
+
       return View();
     }
 
@@ -67,6 +82,7 @@ namespace TercihBilgiPlatformu.Controllers
 
       if (value == null)
       {
+        kullanici.Sifre = SHA256.SHA256Sifreleme(kullanici.Sifre);
         _kullaniciService.Ekle(kullanici);
 
         return RedirectToAction("SignIn", "Login");
@@ -75,12 +91,50 @@ namespace TercihBilgiPlatformu.Controllers
       {
         return RedirectToAction("SignUp", "Login");
       }
-
     }
 
+    [HttpGet]
     public IActionResult Forgot()
     {
       return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Forgot(Kullanici kullanici)
+    {
+      var value = _ctx.Kullanicis.FirstOrDefault(x => x.EMail == kullanici.EMail && x.Silindi == false);
+
+      if (value != null)
+      {
+        Random random = new Random();
+        int geciciSifre = random.Next(10000,100000);
+
+        MailMessage mailMessage = new MailMessage();
+        mailMessage.To.Add(kullanici.EMail);
+        mailMessage.From = new MailAddress("kayaliramazan.rk@gmail.com","tercihbilgiplatformu.com");
+        mailMessage.Subject = "Yeni Şifreniz";
+        mailMessage.Body = "Sayın Kullanıcımız,<br> sistem tarafından oluşturulan şifrenizi: <b>" + geciciSifre + "</b> kullanarak sisteme giriş yapabilir ve daha sonrasında profil ayarları sayfasından şifrenizi değiştirebilirsiniz.<br> İyi günler dileriz...";
+        mailMessage.IsBodyHtml = true;
+
+        SmtpClient smtpClient = new SmtpClient();
+        smtpClient.UseDefaultCredentials = false;
+        smtpClient.Credentials = new NetworkCredential("kayaliramazan.rk@gmail.com", "encqxorkmsklxiic");
+        smtpClient.EnableSsl = true;
+        smtpClient.Host = "smtp.gmail.com";
+        smtpClient.Port = 587;
+        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        smtpClient.Send(mailMessage);
+        mailMessage.Dispose();
+
+        value.Sifre = SHA256.SHA256Sifreleme(geciciSifre.ToString());
+        _kullaniciService.Guncelle(value);
+
+        return RedirectToAction("SignIn", "Login");
+      }
+      else
+      {
+        return RedirectToAction("Forgot", "Login");
+      }
     }
   }
 }

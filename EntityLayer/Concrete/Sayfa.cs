@@ -12,8 +12,9 @@ namespace EntityLayer.Concrete
     [Key]
     public int SayfaID { get; set; }
     public int? AnaSayfaID { get; set; }
-    public int? Adi { get; set; }
-    public bool Url { get; set; }
+    public string Adi { get; set; }
+    public string ControllerAdi { get; set; }
+    public string ViewAdi { get; set; }
     public bool Silindi { get; set; }
   }
 }

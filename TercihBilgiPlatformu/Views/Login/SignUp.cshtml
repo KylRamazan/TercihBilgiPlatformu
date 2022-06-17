@@ -1,4 +1,4 @@
-﻿
+﻿@using EntityLayer.Concrete;
 @{
   Layout = null;
 }
@@ -189,28 +189,10 @@
                     <div class="form-group">
                       <label class="font-size-h6 font-weight-bolder text-dark">Okul Adı</label>
                       <select name="OkulAdi" class="form-control form-control-solid h-auto py-5 px-5 border-0 rounded-lg font-size-h6">
-                        <option value="TR">Turkey</option>
-                        <option value="TM">Turkmenistan</option>
-                        <option value="TC">Turks and Caicos Islands</option>
-                        <option value="TV">Tuvalu</option>
-                        <option value="UG">Uganda</option>
-                        <option value="UA">Ukraine</option>
-                        <option value="AE">United Arab Emirates</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="US">United States</option>
-                        <option value="UM">United States Minor Outlying Islands</option>
-                        <option value="UY">Uruguay</option>
-                        <option value="UZ">Uzbekistan</option>
-                        <option value="VU">Vanuatu</option>
-                        <option value="VE">Venezuela, Bolivarian Republic of</option>
-                        <option value="VN">Viet Nam</option>
-                        <option value="VG">Virgin Islands, British</option>
-                        <option value="VI">Virgin Islands, U.S.</option>
-                        <option value="WF">Wallis and Futuna</option>
-                        <option value="EH">Western Sahara</option>
-                        <option value="YE">Yemen</option>
-                        <option value="ZM">Zambia</option>
-                        <option value="ZW">Zimbabwe</option>
+                        @foreach (var item in ViewBag.universiteler)
+                        {
+                          <option value="@item.Ad">@item.Ad</option>
+                        }
                       </select>
                     </div>
                     <!--end::Input-->
@@ -220,29 +202,11 @@
                     <!--begin::Select-->
                     <div class="form-group">
                       <label class="font-size-h6 font-weight-bolder text-dark">Bölüm Adı</label>
-                      <select name="OkulAdi" class="form-control form-control-solid h-auto py-5 px-5 border-0 rounded-lg font-size-h6">
-                        <option value="TR">Turkey</option>
-                        <option value="TM">Turkmenistan</option>
-                        <option value="TC">Turks and Caicos Islands</option>
-                        <option value="TV">Tuvalu</option>
-                        <option value="UG">Uganda</option>
-                        <option value="UA">Ukraine</option>
-                        <option value="AE">United Arab Emirates</option>
-                        <option value="GB">United Kingdom</option>
-                        <option value="US">United States</option>
-                        <option value="UM">United States Minor Outlying Islands</option>
-                        <option value="UY">Uruguay</option>
-                        <option value="UZ">Uzbekistan</option>
-                        <option value="VU">Vanuatu</option>
-                        <option value="VE">Venezuela, Bolivarian Republic of</option>
-                        <option value="VN">Viet Nam</option>
-                        <option value="VG">Virgin Islands, British</option>
-                        <option value="VI">Virgin Islands, U.S.</option>
-                        <option value="WF">Wallis and Futuna</option>
-                        <option value="EH">Western Sahara</option>
-                        <option value="YE">Yemen</option>
-                        <option value="ZM">Zambia</option>
-                        <option value="ZW">Zimbabwe</option>
+                      <select name="BolumAdi" class="form-control form-control-solid h-auto py-5 px-5 border-0 rounded-lg font-size-h6">
+                        @foreach (var item in ViewBag.bolumler)
+                        {
+                          <option value="@item.Ad">@item.Ad</option>
+                        }
                       </select>
                     </div>
                     <!--end::Input-->
@@ -302,26 +266,19 @@
                 </div>
                 <!--end::Title-->
                 <!--begin::Section-->
-                <h4 class="font-weight-bolder mb-3">Accoun Settings:</h4>
+                <h4 class="font-weight-bolder mb-3">Hesap Bilgileri:</h4>
                 <div class="text-dark-50 font-weight-bold line-height-lg mb-8">
-                  <div>Nick Stone</div>
+                  <div>Email</div>
                   <div>+12233434-34</div>
                   <div>nick.stone@gmail.com</div>
                 </div>
                 <!--end::Section-->
                 <!--begin::Section-->
-                <h4 class="font-weight-bolder mb-3">Address Details:</h4>
+                <h4 class="font-weight-bolder mb-3">Kişisel Bilgiler:</h4>
                 <div class="text-dark-50 font-weight-bold line-height-lg mb-8">
                   <div>Address Line 1</div>
                   <div>Address Line 2</div>
                   <div>Melbourne 3000, VIC, Australia</div>
-                </div>
-                <!--end::Section-->
-                <!--begin::Section-->
-                <h4 class="font-weight-bolder mb-3">Support Channels:</h4>
-                <div class="text-dark-50 font-weight-bold line-height-lg mb-8">
-                  <div>Overnight Delivery with Regular Packaging</div>
-                  <div>Preferred Morning (8:00AM - 11:00AM) Delivery</div>
                 </div>
                 <!--end::Section-->
               </div>

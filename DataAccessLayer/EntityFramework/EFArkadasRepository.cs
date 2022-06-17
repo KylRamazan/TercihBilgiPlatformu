@@ -45,7 +45,7 @@ namespace DataAccessLayer.EntityFramework
 
       arkadas.GuncellemeTarihi = DateTime.Now;
 
-      var entry = context.Entry(item);
+      var entry = context.Entry(arkadas);
       entry.State = EntityState.Modified;
       context.SaveChanges();
     }

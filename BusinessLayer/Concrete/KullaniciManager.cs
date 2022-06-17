@@ -39,6 +39,11 @@ namespace BusinessLayer.Concrete
       _kullaniciDAL.Guncelle(item);
     }
 
+    public void SifreGuncelle(string item)
+    {
+      _kullaniciDAL.SifreGuncelle(item);
+    }
+
     public void Sil(int id)
     {
       _kullaniciDAL.Sil(id);

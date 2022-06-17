@@ -40,6 +40,17 @@ namespace DataAccessLayer.EntityFramework
 
     public void Guncelle(Kullanici item)
     {
+      var kullanici = context.Kullanicis.FirstOrDefault(x => x.KullaniciID == item.KullaniciID);
+
+      kullanici.Sifre = item.Sifre;
+
+      var entry = context.Entry(kullanici);
+      entry.State = EntityState.Modified;
+      context.SaveChanges();
+    }
+
+    public void SifreGuncelle(string item)
+    {
       throw new NotImplementedException();
     }
 
